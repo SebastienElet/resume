@@ -11,3 +11,39 @@ main {
   margin: 4rem auto;
   padding: 0 1.5rem;
 }
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+}
+
+section {
+  margin-top: 2.5rem;
+  border-top: 1px solid #ddd;
+}
+
+article + article {
+  margin-top: 2rem;
+}
+
+address {
+  font-style: normal;
+}
+
+a {
+  color: #245b85;
+  overflow-wrap: anywhere;
+}
+
+.period {
+  color: #555;
+}
+
+.keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  padding: 0;
+  list-style: none;
+}

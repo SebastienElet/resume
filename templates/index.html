@@ -1,17 +1,111 @@
+{% set resume = load_data(path="resume.json") %}
 <!DOCTYPE html>
 <html lang="{{ config.default_language }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{ config.description }}">
-    <title>{{ config.title }}</title>
+    <title>{{ resume.basics.name }} — {{ config.description }}</title>
     <link rel="icon" href="{{ get_url(path='favicon.ico') }}">
     <link rel="stylesheet" href="{{ get_url(path='style.css') }}">
   </head>
   <body>
     <main>
-      <h1>{{ config.title }}</h1>
-      <p>{{ config.description }}</p>
+      <header>
+        <h1>{{ resume.basics.name }}</h1>
+        {% if resume.basics.label %}<p>{{ resume.basics.label }}</p>{% endif %}
+        {% if resume.basics.summary %}<p>{{ resume.basics.summary }}</p>{% endif %}
+        {% if resume.basics.email or resume.basics.phone or resume.basics.url %}
+        <address>
+          <ul>
+            {% if resume.basics.email %}<li><a href="mailto:{{ resume.basics.email }}">{{ resume.basics.email }}</a></li>{% endif %}
+            {% if resume.basics.phone %}<li><a href="tel:{{ resume.basics.phone }}">{{ resume.basics.phone }}</a></li>{% endif %}
+            {% if resume.basics.url %}<li><a href="{{ resume.basics.url }}">{{ resume.basics.url }}</a></li>{% endif %}
+          </ul>
+        </address>
+        {% endif %}
+      </header>
+
+      {% if resume.work %}
+      <section id="experience" aria-labelledby="experience-title">
+        <h2 id="experience-title">Expériences professionnelles</h2>
+        {% for experience in resume.work %}
+        <article>
+          <h3>{{ experience.position }}</h3>
+          <p>{{ experience.name | default(value=experience.company | default(value="")) }}</p>
+          {% if experience.location %}<p>{{ experience.location }}</p>{% endif %}
+          {% if experience.startDate or experience.endDate %}
+          <p class="period">
+            {% if experience.startDate %}<time datetime="{{ experience.startDate }}">{{ experience.startDate }}</time>{% endif %}
+            {% if experience.startDate and experience.endDate %} – {% endif %}
+            {% if experience.endDate %}<time datetime="{{ experience.endDate }}">{{ experience.endDate }}</time>{% elif experience.startDate %} – Aujourd’hui{% endif %}
+          </p>
+          {% endif %}
+          {% if experience.summary %}<p>{{ experience.summary }}</p>{% endif %}
+          {% if experience.highlights %}
+          <ul>
+            {% for highlight in experience.highlights %}
+            <li>{{ highlight }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </article>
+        {% endfor %}
+      </section>
+      {% endif %}
+
+      {% if resume.skills %}
+      <section id="skills" aria-labelledby="skills-title">
+        <h2 id="skills-title">Compétences</h2>
+        {% for skill in resume.skills %}
+        <article>
+          <h3>{{ skill.name }}</h3>
+          {% if skill.level %}<p>{{ skill.level }}</p>{% endif %}
+          {% if skill.keywords %}
+          <ul class="keywords">
+            {% for keyword in skill.keywords %}
+            <li>{{ keyword }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </article>
+        {% endfor %}
+      </section>
+      {% endif %}
+
+      {% if resume.education %}
+      <section id="education" aria-labelledby="education-title">
+        <h2 id="education-title">Formation</h2>
+        {% for education in resume.education %}
+        <article>
+          <h3>{{ education.studyType }}{% if education.studyType and education.area %} — {% endif %}{{ education.area }}</h3>
+          {% if education.institution %}<p>{{ education.institution }}</p>{% endif %}
+          {% if education.startDate or education.endDate %}
+          <p class="period">
+            {% if education.startDate %}<time datetime="{{ education.startDate }}">{{ education.startDate }}</time>{% endif %}
+            {% if education.startDate and education.endDate %} – {% endif %}
+            {% if education.endDate %}<time datetime="{{ education.endDate }}">{{ education.endDate }}</time>{% elif education.startDate %} – Aujourd’hui{% endif %}
+          </p>
+          {% endif %}
+        </article>
+        {% endfor %}
+      </section>
+      {% endif %}
+
+      {% if resume.basics.profiles %}
+      <section id="profiles" aria-labelledby="profiles-title">
+        <h2 id="profiles-title">Liens</h2>
+        <ul>
+          {% for profile in resume.basics.profiles %}
+          <li>
+            {% if profile.url %}<a href="{{ profile.url }}">{% endif %}
+            {{ profile.network }}{% if profile.username %} — {{ profile.username }}{% endif %}
+            {% if profile.url %}</a>{% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
     </main>
   </body>
 </html>
