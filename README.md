@@ -1,17 +1,32 @@
 cv
 ==
 
-[![Dependency Status](https://david-dm.org/SebastienElet/cv.png)](https://david-dm.org/SebastienElet/cv) 
-[![devDependency Status](https://david-dm.org/SebastienElet/cv/dev-status.png)](https://david-dm.org/SebastienElet/cv#info=devDependencies)
+My curriculum vitæ, built with [Zola](https://www.getzola.org/).
 
-My curriculum vitæ
+## Local development
 
-## TODO
+Install Zola on macOS:
 
-- [ ] Write json resume
-- [ ] Setup nextjs
-- [ ] Setup deployment with vercel
-- [ ] Write some CSS 😭
+```sh
+brew install zola
+```
+
+Preview the site at <http://127.0.0.1:1111>:
+
+```sh
+zola serve
+```
+
+Build the site into `public/`:
+
+```sh
+zola build
+```
+
+`config.toml` sets the site URL to `https://sebastien.elet.fr`. Templates live in
+`templates/`, styles in `sass/`, and assets in `static/`. Zola copies
+`static/CNAME` into the generated site. The resume data stays in `resume.json`
+at the repository root; the minimal homepage does not render it yet.
 
 ## License
 
